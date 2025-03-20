@@ -10,7 +10,6 @@ import entidades.Quarto;
 public class Programa7 {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		
 		Scanner sc = new Scanner(System.in);
 		
@@ -22,7 +21,7 @@ public class Programa7 {
 		int numQuartos;
 		String nome;
 		String email;
-		int quarto;
+		int numeroDoQuarto;
 		System.out.print("Quantos quartos serão alugados? ");
 		numQuartos = sc.nextInt();
 		
@@ -34,12 +33,27 @@ public class Programa7 {
 			sc.nextLine(); //limpar buffer
 			System.out.print("Email: ");
 			email = sc.next();
+			
+			estudante.add(new Estudante(nome, email));
+			
 			System.out.print("Quarto: ");
-			quarto = sc.nextInt();
+			numeroDoQuarto = sc.nextInt();
+			quartos[numeroDoQuarto] = new Quarto();
 			
-			
+			quartos[numeroDoQuarto].setInquilino(estudante.get(i));
+			quartos[numeroDoQuarto].setNumero(numeroDoQuarto);
+		}	
+		
+		for(int i=0; i<10; i++) { //usar laço for each
+				
+			if(quartos[i].checarOcupado()) {
+				System.out.println(quartos[i]);
+			}
 			
 		}
+			
+			
+		sc.close();
 		
 	}
 
