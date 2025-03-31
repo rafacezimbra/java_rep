@@ -29,8 +29,8 @@ public class Programa7 {
 			
 			System.out.println("Aluguel #" + i);
 			System.out.print("Nome: ");
-			nome = sc.nextLine();
 			sc.nextLine(); //limpar buffer
+			nome = sc.nextLine();
 			System.out.print("Email: ");
 			email = sc.next();
 			
@@ -44,10 +44,9 @@ public class Programa7 {
 			quartos[numeroDoQuarto].setNumero(numeroDoQuarto);
 		}	
 		
-		for(int i=0; i<10; i++) { //usar laço for each
-				
-			if(quartos[i].checarOcupado()) {
-				System.out.println(quartos[i]);
+		for(Quarto i:quartos) { //usar laço for each
+			if(i != null) {	//checa se o quarto esta ocupado ou nao
+				System.out.println(i);
 			}
 			
 		}

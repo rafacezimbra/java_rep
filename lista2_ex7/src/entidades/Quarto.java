@@ -32,7 +32,7 @@ public class Quarto {
 
 	public String toString() {
 		
-		return numero + " : " + inquilino.getNome() + ", " + inquilino.getEmail();
+		return numero + ": " + inquilino.getNome() + ", " + inquilino.getEmail();
 	}
 	
 	public boolean checarOcupado() {

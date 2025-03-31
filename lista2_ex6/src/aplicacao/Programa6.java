@@ -61,6 +61,7 @@ Informe um valor de saque: 300,00
 		
 		System.out.println("Dados da conta atualizados: ");
 		System.out.println(conta);
+		sc.close();
 	}
 
 }
