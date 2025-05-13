@@ -1,0 +1,266 @@
+//Guilherme Duque e Rafael Cezimbra
+
+//Main
+
+package aplicacao;
+
+import java.time.LocalDate;
+import java.util.Scanner;
+
+public class Programa_trovao {
+
+	public static void main(String[] args) {
+		
+		int codigo;
+		String descricao;
+		double valorDiaria;
+		LocalDate entrada;
+		LocalDate saida;
+		
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("***Informe os dados da locação:***");
+		System.out.print("Código do imóvel: ");
+		sc.nextInt();
+		System.out.print("Código do imóvel: ");
+		sc.next();
+		System.out.print("Valor da Diária: ");
+		sc.nextDouble();
+		System.out.print("Data Entrada(dd/MM/yyyy)");
+		//botar scanner de localdate
+		System.out.print("Data Saida(dd/MM/yyyy)");
+		
+		sc.close();
+	}
+
+}
+
+
+
+//Aluguel
+
+package entidades;
+
+import java.time.Duration;
+import java.time.LocalDate;
+
+public class Aluguel {
+
+	private LocalDate entrada;
+	private LocalDate saida;
+	private Integer numeroDiarias;
+	
+	private Imovel imovel;
+	private Boleto boleto;
+	
+	
+	
+	public Aluguel(LocalDate entrada, LocalDate saida, Imovel imovel, Boleto boleto) {
+		super();
+		this.entrada = entrada;
+		this.saida = saida;
+		this.imovel = imovel;
+		this.boleto = boleto;
+		
+		calcularNumeroDiarias();
+	}
+
+
+
+
+	private void calcularNumeroDiarias() {
+		// Para calcular a duração entre duas datas
+		Duration duracao = Duration.between(entrada.atStartOfDay(), saida.atStartOfDay());
+		numeroDiarias = (int)duracao.toDays();
+	}
+	
+	
+	
+	
+	public LocalDate getEntrada() {
+		return entrada;
+	}
+	public void setEntrada(LocalDate entrada) {
+		this.entrada = entrada;
+	}
+	public LocalDate getSaida() {
+		return saida;
+	}
+	public void setSaida(LocalDate saida) {
+		this.saida = saida;
+	}
+	public Imovel getImovel() {
+		return imovel;
+	}
+	public void setImovel(Imovel imovel) {
+		this.imovel = imovel;
+	}
+	public Boleto getBoleto() {
+		return boleto;
+	}
+	public void setBoleto(Boleto boleto) {
+		this.boleto = boleto;
+	}
+	public Integer getNumeroDiarias() {
+		return numeroDiarias;
+	}
+	public void setNumeroDiarias(Integer numeroDiarias) {
+		this.numeroDiarias = numeroDiarias;
+	}
+	
+	
+}
+
+
+//Boleto
+
+package entidades;
+
+public class Boleto {
+
+	private Double taxaTotal;
+	
+	private Double valorTotal;
+
+	
+	public Boleto() {
+	}
+
+	
+	public Double getTaxaTotal() {
+		return taxaTotal;
+	}
+
+	public void setTaxaTotal(Double taxaTotal) {
+		this.taxaTotal = taxaTotal;
+	}
+
+	public Double getValorTotal() {
+		return valorTotal;
+	}
+
+	public void setValorTotal(Double valorTotal) {
+		this.valorTotal = valorTotal;
+	}
+}
+
+
+//Imovel
+
+package entidades;
+
+public class Imovel {
+
+	private Integer codigo;
+	private String descricao;
+	
+	
+	public Imovel(Integer codigo, String descricao) {
+		this.codigo = codigo;
+		this.descricao = descricao;
+	}
+	
+	
+	public Integer getCodigo() {
+		return codigo;
+	}
+	public void setCodigo(Integer codigo) {
+		this.codigo = codigo;
+	}
+	public String getDescricao() {
+		return descricao;
+	}
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+	
+	
+	
+}
+
+
+//ServicoGerarBoleto
+
+
+package Servicos;
+import entidades.Aluguel;
+
+public class ServicoGerarBoleto {
+	private Double valorDiaria;
+	private ServicoTaxa servicoTaxa;
+	
+	public ServicoGerarBoleto(Double valorDiaria, ServicoTaxa servicoTaxa) {
+		super();
+		this.valorDiaria = valorDiaria;
+		this.servicoTaxa = servicoTaxa;
+	}
+
+	
+	public void processarBoleto(Aluguel aluguel) {
+		
+		Double taxaTotal = servicoTaxa.calculaTaxa(valorDiaria);
+		aluguel.getBoleto().setTaxaTotal(taxaTotal);
+		
+		Double valorTotal = (valorDiaria * aluguel.getNumeroDiarias()) + taxaTotal;
+		aluguel.getBoleto().setValorTotal(valorTotal);
+	}
+	
+
+
+	public Double getValorDiaria() {
+		return valorDiaria;
+	}
+
+	public void setValorDiaria(Double valorDiaria) {
+		this.valorDiaria = valorDiaria;
+	}
+	public ServicoTaxa getServicoTaxa() {
+		return servicoTaxa;
+	}
+
+	public void setServicoTaxa(ServicoTaxa servicoTaxa) {
+		this.servicoTaxa = servicoTaxa;
+	}
+
+
+
+
+}
+
+
+//Interface
+
+package Servicos;
+
+public interface ServicoTaxa {
+	public Double calculaTaxa(Double valorDiaria);
+}
+
+
+//ServicoTaxaMarAzul
+
+package Servicos;
+
+public class ServicoTaxaMarAzul implements ServicoTaxa {
+	public Double calculaTaxa(Double valorDiaria) {
+		Double taxa;
+		taxa = ((0.02*valorDiaria)+15);
+		return taxa;
+	}
+}
+
+
+//ServicoTaxaParaiso
+
+package Servicos;
+
+public class ServicoTaxaParaiso {
+	public Double calculaTaxa(Double valorDiaria) {
+		Double taxa;
+		taxa = ((0.05*valorDiaria)+10);
+		return taxa;
+	}
+}
+
+
+
